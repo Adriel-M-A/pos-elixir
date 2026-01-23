@@ -38,7 +38,8 @@ export function createSaleService(repository: any, promotionRepository: any) {
           subtotal: i.unitPrice * i.quantity
         })),
         promotions,
-        userId: parsed.userId
+        userId: parsed.userId,
+        source: parsed.source
       })
     },
 

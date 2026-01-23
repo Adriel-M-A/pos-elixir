@@ -36,6 +36,8 @@ export interface SalesContextType {
   setPaymentMethod: (id: number) => void
   processSale: () => Promise<void>
   clearCart: () => void
+  source: 'LOCAL' | 'ONLINE'
+  setSource: (source: 'LOCAL' | 'ONLINE') => void
 }
 
 export const SalesContext = createContext<SalesContextType | undefined>(undefined)
@@ -44,6 +46,7 @@ export const SalesProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   const [cart, setCart] = useState<CartItem[]>([])
   const [appliedPromotions, setAppliedPromotions] = useState<AppliedPromotion[]>([])
   const [paymentMethodId, setPaymentMethodId] = useState<number | null>(null)
+  const [source, setSource] = useState<'LOCAL' | 'ONLINE'>('LOCAL')
 
   const { user } = useAuth()
   const { invalidateSalesHistory } = useSalesHistory()
@@ -198,6 +201,7 @@ export const SalesProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     setCart([])
     setAppliedPromotions([])
     setPaymentMethodId(null)
+    setSource('LOCAL')
   }, [])
 
   const processSale = useCallback(async (): Promise<void> => {
@@ -215,7 +219,8 @@ export const SalesProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         paymentMethodId,
         items: cart,
         promotions: appliedPromotions,
-        userId: user?.id
+        userId: user?.id,
+        source
       })
       toast.success('Venta realizada con éxito')
       clearCart()
@@ -248,7 +253,9 @@ export const SalesProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     removePromotion,
     setPaymentMethod: setPaymentMethodId,
     processSale,
-    clearCart
+    clearCart,
+    source,
+    setSource
   }), [
     cart,
     appliedPromotions,
@@ -262,8 +269,11 @@ export const SalesProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     removeItem,
     upsertPromotion,
     removePromotion,
+    removePromotion,
     processSale,
-    clearCart
+    clearCart,
+    source,
+    setSource
   ])
 
   return (

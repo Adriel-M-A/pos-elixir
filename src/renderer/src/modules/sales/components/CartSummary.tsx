@@ -33,7 +33,9 @@ export function CartSummary() {
     removePromotion,
     setPaymentMethod,
     processSale,
-    clearCart
+    clearCart,
+    source,
+    setSource
   } = useSales()
 
   const { can } = useAuth()
@@ -335,6 +337,33 @@ export function CartSummary() {
               )}
             </div>
           )}
+
+          {/* Source Selection */}
+          <div className="space-y-1.5">
+            <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider pl-1">
+              Origen de Venta
+            </label>
+            <Tabs
+              value={source}
+              onValueChange={(val) => setSource(val as 'LOCAL' | 'ONLINE')}
+              className="w-full"
+            >
+              <TabsList className="w-full h-10 grid grid-cols-2">
+                <TabsTrigger
+                  value="LOCAL"
+                  className="h-8 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
+                >
+                  Local
+                </TabsTrigger>
+                <TabsTrigger
+                  value="ONLINE"
+                  className="h-8 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
+                >
+                  PedidosYa
+                </TabsTrigger>
+              </TabsList>
+            </Tabs>
+          </div>
 
           {/* Payment Method Select (Tabs) */}
           <div className="space-y-1.5">
