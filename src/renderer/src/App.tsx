@@ -13,6 +13,7 @@ import Promotions from './modules/promtions'
 import Pos from './modules/sales'
 import SalesHistory from './modules/sales/pages/SalesHistory'
 import Reports from './modules/reports'
+import Flavors from './modules/flavors/pages/Flavors'
 
 import { ProductsProvider } from './modules/products'
 import { CategoriesProvider } from './modules/categories'
@@ -20,6 +21,7 @@ import { PromotionsProvider } from './modules/promtions'
 import { SalesProvider } from './modules/sales/context/SalesContext'
 import { ReportsProvider } from './modules/reports/context/ReportsContext'
 import { SalesHistoryProvider } from './modules/sales/context/SalesHistoryContext'
+import { FlavorsProvider } from './modules/flavors/context/FlavorsContext'
 import { AuthProvider } from './modules/auth/context/AuthContext'
 import { ProtectedRoute } from './components/ProtectedRoute'
 import { RoleGuard } from './modules/auth/components/RoleGuard'
@@ -41,6 +43,7 @@ const RootRoutes = () => {
               <Route path="/products" element={<Products />} />
               <Route path="/categories" element={<Categories />} />
               <Route path="/promotions" element={<Promotions />} />
+              <Route path="/flavors" element={<Flavors />} />
               <Route path="/sales" element={<SalesHistory />} />
               <Route path="/reports" element={<Reports />} />
               <Route path="/configuracion" element={<Configuracion />} />
@@ -72,7 +75,9 @@ function App(): React.ReactElement {
                 <ReportsProvider>
                   <SalesHistoryProvider>
                     <SalesProvider>
-                      <RootRoutes />
+                      <FlavorsProvider>
+                        <RootRoutes />
+                      </FlavorsProvider>
                     </SalesProvider>
                   </SalesHistoryProvider>
                 </ReportsProvider>

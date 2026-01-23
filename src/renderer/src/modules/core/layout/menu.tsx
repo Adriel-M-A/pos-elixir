@@ -4,7 +4,8 @@ import {
   ShoppingCart,
   ChartPie,
   Tag,
-  Receipt
+  Receipt,
+  IceCream
 } from 'lucide-react'
 import { PERMISSIONS } from '@shared/types'
 
@@ -19,6 +20,12 @@ export const menuConfig = [
     label: 'Productos',
     icon: Box,
     path: '/products',
+    permission: PERMISSIONS.PRODUCTS_VIEW
+  },
+  {
+    label: 'Sabores',
+    icon: IceCream,
+    path: '/flavors',
     permission: PERMISSIONS.PRODUCTS_VIEW
   },
   {

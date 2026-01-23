@@ -211,6 +211,42 @@ function migrate() {
         migrationTransaction();
         console.log(`Ventas migradas: ${salesCount}`);
 
+        // ---------------------------------------------------------
+        // 4. MIGRAR SABORES (BALDES)
+        // ---------------------------------------------------------
+        console.log('Migrando Sabores...');
+
+        // Verificar si existe la tabla flavors en la BD vieja
+        const tablesOld = oldDb.prepare("SELECT name FROM sqlite_master WHERE type='table' AND name='flavors'").get();
+        if (tablesOld) {
+            const oldFlavors = oldDb.prepare('SELECT * FROM flavors').all();
+            const insertFlavor = newDb.prepare(`
+                INSERT INTO flavors (name, stock, is_active)
+                VALUES (?, ?, ?)
+            `);
+
+            let flavorsCount = 0;
+            const flavorsTransaction = newDb.transaction(() => {
+                for (const f of oldFlavors) {
+                    try {
+                        insertFlavor.run(
+                            f.name,
+                            f.stock || 0,
+                            f.is_active !== undefined ? f.is_active : 1
+                        );
+                        flavorsCount++;
+                    } catch (e) {
+                        console.warn(`Error al migrar sabor "${f.name}":`, e.message);
+                    }
+                }
+            });
+
+            flavorsTransaction();
+            console.log(`Sabores migrados: ${flavorsCount}`);
+        } else {
+            console.log('La tabla de sabores no existe en la base de datos antigua. Saltando...');
+        }
+
         console.log('--- Migración Completada con Éxito ---');
 
     } catch (error) {

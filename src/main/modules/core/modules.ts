@@ -10,6 +10,7 @@ import { initReportModule } from '../reports'
 import { initBackupModule } from '../backups'
 import { initAuthModule } from '../auth'
 import { initUserModule } from '../users'
+import { initFlavorModule } from '../flavors'
 
 export function initModules(db: Database) {
   initAuthModule(db)
@@ -21,4 +22,5 @@ export function initModules(db: Database) {
   initSaleModule(db)
   initReportModule(db)
   initBackupModule(db)
+  initFlavorModule(db)
 }
