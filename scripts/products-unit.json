@@ -1,0 +1,352 @@
+[
+    {
+        "name": "Coca Cola vidrio 1L",
+        "price": 1800,
+        "category": "bebidas"
+    },
+    {
+        "name": "Coca Cola plástico 1L",
+        "price": 1600,
+        "category": "bebidas"
+    },
+    {
+        "name": "Coca Cola retornable vidrio 1L",
+        "price": 1400,
+        "category": "bebidas"
+    },
+    {
+        "name": "Coca Cola lata 354ml",
+        "price": 1200,
+        "category": "bebidas"
+    },
+    {
+        "name": "Coca Cola Zero 1.5L",
+        "price": 2100,
+        "category": "bebidas"
+    },
+    {
+        "name": "Pepsi 1.5L",
+        "price": 1900,
+        "category": "bebidas"
+    },
+    {
+        "name": "Pepsi lata 354ml",
+        "price": 1100,
+        "category": "bebidas"
+    },
+    {
+        "name": "Sprite 1.5L",
+        "price": 2000,
+        "category": "bebidas"
+    },
+    {
+        "name": "Fanta naranja 1.5L",
+        "price": 1950,
+        "category": "bebidas"
+    },
+    {
+        "name": "Seven Up 1.5L",
+        "price": 1900,
+        "category": "bebidas"
+    },
+    {
+        "name": "Agua mineral 500ml",
+        "price": 900,
+        "category": "bebidas"
+    },
+    {
+        "name": "Agua mineral 2L",
+        "price": 1300,
+        "category": "bebidas"
+    },
+    {
+        "name": "Agua saborizada manzana 1.5L",
+        "price": 1600,
+        "category": "bebidas"
+    },
+    {
+        "name": "Soda 1.5L",
+        "price": 1100,
+        "category": "bebidas"
+    },
+    {
+        "name": "Energizante Speed",
+        "price": 1400,
+        "category": "bebidas"
+    },
+    {
+        "name": "Cerveza Quilmes lata 473ml",
+        "price": 1500,
+        "category": "bebidas"
+    },
+    {
+        "name": "Cerveza Brahma lata 473ml",
+        "price": 1450,
+        "category": "bebidas"
+    },
+    {
+        "name": "Cerveza Heineken lata 473ml",
+        "price": 2000,
+        "category": "bebidas"
+    },
+    {
+        "name": "Cerveza Andes rubia 473ml",
+        "price": 1700,
+        "category": "bebidas"
+    },
+    {
+        "name": "Cerveza Schneider lata 473ml",
+        "price": 1400,
+        "category": "bebidas"
+    },
+    {
+        "name": "Alfajor Fantoche triple",
+        "price": 800,
+        "category": "dulces"
+    },
+    {
+        "name": "Alfajor Fantoche simple",
+        "price": 600,
+        "category": "dulces"
+    },
+    {
+        "name": "Alfajor Oreo triple",
+        "price": 950,
+        "category": "dulces"
+    },
+    {
+        "name": "Alfajor Aguila simple",
+        "price": 700,
+        "category": "dulces"
+    },
+    {
+        "name": "Alfajor Aguila brownie",
+        "price": 950,
+        "category": "dulces"
+    },
+    {
+        "name": "Alfajor Jorgito chocolate",
+        "price": 650,
+        "category": "dulces"
+    },
+    {
+        "name": "Alfajor Jorgito blanco",
+        "price": 650,
+        "category": "dulces"
+    },
+    {
+        "name": "Alfajor Bon o Bon",
+        "price": 750,
+        "category": "dulces"
+    },
+    {
+        "name": "Alfajor Milka mousse",
+        "price": 1000,
+        "category": "dulces"
+    },
+    {
+        "name": "Alfajor Capitán del Espacio",
+        "price": 900,
+        "category": "dulces"
+    },
+    {
+        "name": "Galletitas Oreo",
+        "price": 1200,
+        "category": "dulces"
+    },
+    {
+        "name": "Galletitas Pepitos",
+        "price": 1100,
+        "category": "dulces"
+    },
+    {
+        "name": "Galletitas Chocolinas",
+        "price": 1000,
+        "category": "dulces"
+    },
+    {
+        "name": "Galletitas Sonrisas",
+        "price": 950,
+        "category": "dulces"
+    },
+    {
+        "name": "Don Satur grasa",
+        "price": 900,
+        "category": "dulces"
+    },
+    {
+        "name": "Chocolate Milka 100g",
+        "price": 1800,
+        "category": "dulces"
+    },
+    {
+        "name": "Chocolate Shot",
+        "price": 900,
+        "category": "dulces"
+    },
+    {
+        "name": "Chocolate Kinder",
+        "price": 1100,
+        "category": "dulces"
+    },
+    {
+        "name": "Turrón Arcor",
+        "price": 500,
+        "category": "dulces"
+    },
+    {
+        "name": "Caramelos Sugus",
+        "price": 400,
+        "category": "dulces"
+    },
+    {
+        "name": "Papas fritas Lays",
+        "price": 1300,
+        "category": "almacen"
+    },
+    {
+        "name": "Palitos salados",
+        "price": 850,
+        "category": "almacen"
+    },
+    {
+        "name": "Maní salado",
+        "price": 700,
+        "category": "almacen"
+    },
+    {
+        "name": "Nachos sabor queso",
+        "price": 1200,
+        "category": "almacen"
+    },
+    {
+        "name": "Galletas de arroz",
+        "price": 950,
+        "category": "almacen"
+    },
+    {
+        "name": "Leche entera 1L",
+        "price": 1200,
+        "category": "almacen"
+    },
+    {
+        "name": "Yogur bebible frutilla",
+        "price": 900,
+        "category": "almacen"
+    },
+    {
+        "name": "Manteca",
+        "price": 1400,
+        "category": "almacen"
+    },
+    {
+        "name": "Crema de leche",
+        "price": 1100,
+        "category": "almacen"
+    },
+    {
+        "name": "Queso rallado",
+        "price": 1300,
+        "category": "almacen"
+    },
+    {
+        "name": "Pan lactal",
+        "price": 1800,
+        "category": "almacen"
+    },
+    {
+        "name": "Fideos secos",
+        "price": 700,
+        "category": "almacen"
+    },
+    {
+        "name": "Arroz largo fino",
+        "price": 950,
+        "category": "almacen"
+    },
+    {
+        "name": "Aceite girasol 900ml",
+        "price": 1900,
+        "category": "almacen"
+    },
+    {
+        "name": "Azúcar 1kg",
+        "price": 900,
+        "category": "almacen"
+    },
+    {
+        "name": "Yerba mate 1kg",
+        "price": 2300,
+        "category": "almacen"
+    },
+    {
+        "name": "Café instantáneo",
+        "price": 2500,
+        "category": "almacen"
+    },
+    {
+        "name": "Té en saquitos",
+        "price": 700,
+        "category": "almacen"
+    },
+    {
+        "name": "Mate cocido",
+        "price": 650,
+        "category": "almacen"
+    },
+    {
+        "name": "Sal fina",
+        "price": 600,
+        "category": "almacen"
+    },
+    {
+        "name": "Lavandina 1L",
+        "price": 700,
+        "category": "limpieza"
+    },
+    {
+        "name": "Detergente",
+        "price": 900,
+        "category": "limpieza"
+    },
+    {
+        "name": "Jabón en polvo",
+        "price": 1800,
+        "category": "limpieza"
+    },
+    {
+        "name": "Desodorante ambiente",
+        "price": 1200,
+        "category": "limpieza"
+    },
+    {
+        "name": "Esponja de cocina",
+        "price": 400,
+        "category": "limpieza"
+    },
+    {
+        "name": "Papel higiénico x4",
+        "price": 1500,
+        "category": "limpieza"
+    },
+    {
+        "name": "Servilletas",
+        "price": 600,
+        "category": "limpieza"
+    },
+    {
+        "name": "Bolsa de residuos",
+        "price": 800,
+        "category": "limpieza"
+    },
+    {
+        "name": "Limpiador líquido",
+        "price": 950,
+        "category": "limpieza"
+    },
+    {
+        "name": "Alcohol 500ml",
+        "price": 700,
+        "category": "limpieza"
+    }
+]

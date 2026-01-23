@@ -1,0 +1,202 @@
+[
+    {
+        "name": "Jamón cocido",
+        "price": 9000,
+        "category": "fiambreria"
+    },
+    {
+        "name": "Jamón crudo",
+        "price": 18000,
+        "category": "fiambreria"
+    },
+    {
+        "name": "Queso cremoso",
+        "price": 8500,
+        "category": "fiambreria"
+    },
+    {
+        "name": "Queso pategrás",
+        "price": 10000,
+        "category": "fiambreria"
+    },
+    {
+        "name": "Queso tybo",
+        "price": 9500,
+        "category": "fiambreria"
+    },
+    {
+        "name": "Salame picado fino",
+        "price": 11000,
+        "category": "fiambreria"
+    },
+    {
+        "name": "Mortadela",
+        "price": 6000,
+        "category": "fiambreria"
+    },
+    {
+        "name": "Bondiola",
+        "price": 12000,
+        "category": "fiambreria"
+    },
+    {
+        "name": "Panceta",
+        "price": 13000,
+        "category": "fiambreria"
+    },
+    {
+        "name": "Chorizo seco",
+        "price": 10000,
+        "category": "fiambreria"
+    },
+    {
+        "name": "Carne picada común",
+        "price": 6500,
+        "category": "carniceria"
+    },
+    {
+        "name": "Carne picada especial",
+        "price": 7800,
+        "category": "carniceria"
+    },
+    {
+        "name": "Asado",
+        "price": 8500,
+        "category": "carniceria"
+    },
+    {
+        "name": "Vacío",
+        "price": 9000,
+        "category": "carniceria"
+    },
+    {
+        "name": "Matambre",
+        "price": 8800,
+        "category": "carniceria"
+    },
+    {
+        "name": "Nalga",
+        "price": 9200,
+        "category": "carniceria"
+    },
+    {
+        "name": "Cuadrada",
+        "price": 9000,
+        "category": "carniceria"
+    },
+    {
+        "name": "Bola de lomo",
+        "price": 9500,
+        "category": "carniceria"
+    },
+    {
+        "name": "Paleta",
+        "price": 8000,
+        "category": "carniceria"
+    },
+    {
+        "name": "Roast beef",
+        "price": 8200,
+        "category": "carniceria"
+    },
+    {
+        "name": "Pechuga de pollo",
+        "price": 6200,
+        "category": "carniceria"
+    },
+    {
+        "name": "Muslo de pollo",
+        "price": 4800,
+        "category": "carniceria"
+    },
+    {
+        "name": "Alitas de pollo",
+        "price": 4500,
+        "category": "carniceria"
+    },
+    {
+        "name": "Pollo entero",
+        "price": 5200,
+        "category": "carniceria"
+    },
+    {
+        "name": "Suprema de pollo",
+        "price": 6800,
+        "category": "carniceria"
+    },
+    {
+        "name": "Chorizo parrillero",
+        "price": 5500,
+        "category": "carniceria"
+    },
+    {
+        "name": "Morcilla",
+        "price": 5000,
+        "category": "carniceria"
+    },
+    {
+        "name": "Salchicha",
+        "price": 4800,
+        "category": "carniceria"
+    },
+    {
+        "name": "Hamburguesas",
+        "price": 6500,
+        "category": "carniceria"
+    },
+    {
+        "name": "Carne para milanesa",
+        "price": 9000,
+        "category": "carniceria"
+    },
+    {
+        "name": "Papas",
+        "price": 900,
+        "category": "verduleria"
+    },
+    {
+        "name": "Cebolla",
+        "price": 850,
+        "category": "verduleria"
+    },
+    {
+        "name": "Tomate",
+        "price": 1200,
+        "category": "verduleria"
+    },
+    {
+        "name": "Zanahoria",
+        "price": 700,
+        "category": "verduleria"
+    },
+    {
+        "name": "Lechuga",
+        "price": 1500,
+        "category": "verduleria"
+    },
+    {
+        "name": "Manzana",
+        "price": 1400,
+        "category": "verduleria"
+    },
+    {
+        "name": "Banana",
+        "price": 1300,
+        "category": "verduleria"
+    },
+    {
+        "name": "Naranja",
+        "price": 1100,
+        "category": "verduleria"
+    },
+    {
+        "name": "Mandarina",
+        "price": 1000,
+        "category": "verduleria"
+    },
+    {
+        "name": "Pera",
+        "price": 1350,
+        "category": "verduleria"
+    }
+]
