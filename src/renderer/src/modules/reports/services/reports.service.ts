@@ -5,13 +5,15 @@ import type {
   PaymentMethodSummary,
   TopProduct,
   Sale,
-  SalesComparison
+  SalesComparison,
+  SalesSourceSummary
 } from '@types'
 
 export interface DailyReportResponse {
   sales: DailySaleRow[]
   summary: SalesSummary
   byPaymentMethod: (PaymentMethodSummary & { name: string })[]
+  bySalesSource: SalesSourceSummary[]
   comparison: SalesComparison
 }
 

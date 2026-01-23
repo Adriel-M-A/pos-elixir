@@ -9,6 +9,7 @@ import { RevenueTrendChart } from '../components/RevenueTrendChart'
 import { useReports } from '../context/ReportsContext'
 import { ReportsLoading } from '../components/ReportsLoading'
 import { PaymentMethodsChart } from '../components/PaymentMethodsChart'
+import { SalesSourceChart } from '../components/SalesSourceChart'
 import { TopProductsTable } from '../components/TopProductsTable'
 import { LowStockTable } from '../components/LowStockTable'
 import { ReportsFilterSheet, DateFilterPreset } from '../components/ReportsFilterSheet'
@@ -230,13 +231,18 @@ export default function Reports() {
               />
             </div>
 
-            {/* Fila 2: Gráficos (Tendencia y Métodos de Pago) */}
-            <div className="grid gap-4 lg:grid-cols-3">
-              <div className="lg:col-span-2 min-h-[350px] lg:h-[400px]">
-                <RevenueTrendChart sales={data.sales} />
-              </div>
-              <div className="lg:col-span-1 min-h-[350px] lg:h-[400px]">
+            {/* Fila 2: Gráfico de Tendencia (Full Width) */}
+            <div className="min-h-[350px] lg:h-[400px]">
+              <RevenueTrendChart sales={data.sales} />
+            </div>
+
+            {/* Fila 3: Gráficos de Distribución (Métodos de Pago y Origen) */}
+            <div className="grid gap-4 lg:grid-cols-2">
+              <div className="min-h-[350px] lg:h-[400px]">
                 <PaymentMethodsChart data={paymentMethods} />
+              </div>
+              <div className="min-h-[350px] lg:h-[400px]">
+                <SalesSourceChart data={data.bySalesSource} />
               </div>
             </div>
 

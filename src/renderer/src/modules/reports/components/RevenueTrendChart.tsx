@@ -33,7 +33,7 @@ function buildHourlyTrend(sales: DailySaleRow[]) {
 }
 
 export function RevenueTrendChart({ sales }: RevenueTrendChartProps) {
-  const [startHour, setStartHour] = useState('8')
+  const [startHour, setStartHour] = useState('15')
   const [endHour, setEndHour] = useState('24') // 24 represents 00:00 at the end of the day
 
   const trendData = useMemo(() => {

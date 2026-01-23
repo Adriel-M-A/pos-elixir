@@ -80,6 +80,26 @@ export function createReportRepository(db: Database) {
         .all(startDateTime, endDateTime) as (PaymentMethodSummary & { name: string })[]
     },
 
+    getSalesSourceSummary(
+      start: string,
+      end: string
+    ): SalesSourceSummary[] {
+      const startDateTime = `${start}T00:00:00`
+      const endDateTime = `${end}T23:59:59`
+
+      return db
+        .prepare(
+          `SELECT
+            source,
+            COALESCE(SUM(final_total), 0) as totalFinal
+          FROM sales
+          WHERE status != 'cancelled' 
+            AND created_at BETWEEN ? AND ?
+          GROUP BY source`
+        )
+        .all(startDateTime, endDateTime) as SalesSourceSummary[]
+    },
+
     getSaleDetail(saleId: number) {
       const sale = db
         .prepare(

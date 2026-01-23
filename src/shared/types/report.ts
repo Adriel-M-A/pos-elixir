@@ -20,6 +20,11 @@ export interface PaymentMethodSummary {
   totalFinal: number
 }
 
+export interface SalesSourceSummary {
+  source: string
+  totalFinal: number
+}
+
 export interface TopProduct {
   productId: number
   productName: string
