@@ -76,6 +76,7 @@ export default function SalesHistory() {
   const columns = [
     { key: 'id', label: 'Ticket' },
     { key: 'date', label: 'Fecha y Hora' },
+    { key: 'source', label: 'Origen' },
     ...(showUserColumn ? [{ key: 'user', label: 'Usuario' }] : []),
     { key: 'items', label: 'Resumen' },
     { key: 'payment', label: 'Método de Pago' },
@@ -179,6 +180,12 @@ export default function SalesHistory() {
                     minute: '2-digit',
                     hour12: false
                   })}
+                </span>
+              </TableCell>
+
+              <TableCell>
+                <span className="text-sm text-foreground">
+                  {sale.source === 'ONLINE' ? 'PedidosYa' : 'Local'}
                 </span>
               </TableCell>
 

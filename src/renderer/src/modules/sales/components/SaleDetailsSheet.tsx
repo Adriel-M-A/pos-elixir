@@ -10,7 +10,7 @@ import { Separator } from '@/components/ui/separator'
 import { SheetLayout } from '@/components/ui/sheet-layout'
 import { formatCurrency } from '../../../utils/currency'
 import type { SaleWithDetails } from '@types'
-import { Calendar, CreditCard, Receipt, Package, Tag, User } from 'lucide-react'
+import { Calendar, CreditCard, Receipt, Package, Tag, User, Globe, Store } from 'lucide-react'
 
 interface SaleDetailsSheetProps {
   sale: SaleWithDetails | null
@@ -107,6 +107,17 @@ export function SaleDetailsSheet({ sale, open, onOpenChange, showUser = false }:
                     </span>
                   </div>
                 )}
+
+                {/* Source/Origen */}
+                <div className="p-4 border-t bg-muted/20 flex items-center justify-between">
+                  <span className="text-muted-foreground text-xs font-medium uppercase flex items-center gap-1">
+                    {sale.source === 'ONLINE' ? <Globe className="h-3 w-3" /> : <Store className="h-3 w-3" />}
+                    Origen
+                  </span>
+                  <span className="font-semibold text-foreground">
+                    {sale.source === 'ONLINE' ? 'PedidosYa' : 'Local'}
+                  </span>
+                </div>
               </div>
 
               {/* Lista de Productos */}
@@ -168,6 +179,6 @@ export function SaleDetailsSheet({ sale, open, onOpenChange, showUser = false }:
           </ScrollArea>
         </SheetLayout>
       </SheetContent>
-    </Sheet>
+    </Sheet >
   )
 }
