@@ -44,6 +44,7 @@ export function ProductFormSheet({
   const [name, setName] = useState('')
   const [categoryId, setCategoryId] = useState('')
   const [price, setPrice] = useState('')
+  const [priceDelivery, setPriceDelivery] = useState('')
   const [isStockControlled, setIsStockControlled] = useState(false)
   const [stock, setStock] = useState('')
   const [minStock, setMinStock] = useState('')
@@ -86,6 +87,7 @@ export function ProductFormSheet({
       setName(product.name)
       setCategoryId(product.categoryId?.toString() || '')
       setPrice(product.price.toString())
+      setPriceDelivery(product.priceDelivery?.toString() || '')
       setIsStockControlled(product.isStockControlled || false)
       setStock(product.stock.toString())
       setMinStock(product.minStock?.toString() || '0')
@@ -96,6 +98,7 @@ export function ProductFormSheet({
       setName('')
       setCategoryId('')
       setPrice('')
+      setPriceDelivery('')
       setIsStockControlled(false)
       setStock('')
       setMinStock('')
@@ -110,6 +113,7 @@ export function ProductFormSheet({
         name,
         categoryId: Number(categoryId) || null,
         price: Number(price),
+        priceDelivery: priceDelivery ? Number(priceDelivery) : null,
         isStockControlled: productType === 'WEIGHT' ? false : isStockControlled,
         stock: isStockControlled && productType === 'UNIT' ? Number(stock) : 0,
         minStock: isStockControlled && productType === 'UNIT' ? Number(minStock) : 0,
@@ -131,6 +135,7 @@ export function ProductFormSheet({
         // Reset specific fields for next entry but keep context (Category, Type)
         setName('')
         setPrice('')
+        setPriceDelivery('')
         setStock('')
         setMinStock('') // Reset minStock as requested
         // NOTE: We keep categoryId, isStockControlled, minStock, productType for rapid entry context
@@ -406,6 +411,29 @@ export function ProductFormSheet({
                   placeholder="0.00"
                   className="h-10"
                   required
+                />
+              </div>
+
+              {/* Precio Delivery */}
+              <div className="space-y-2">
+                <Label htmlFor="priceDelivery" className="flex items-center gap-1">
+                  Precio PedidosYa <span className="text-muted-foreground font-normal text-xs">(opcional)</span>
+                </Label>
+                <Input
+                  id="priceDelivery"
+                  type="number"
+                  step="0.01"
+                  min="0"
+                  max="999999999.99"
+                  value={priceDelivery}
+                  onChange={(e) => {
+                    const value = e.target.value
+                    if (value === '' || parseFloat(value) >= 0) {
+                      setPriceDelivery(value)
+                    }
+                  }}
+                  placeholder="Vacio para usar precio base"
+                  className="h-10"
                 />
               </div>
 

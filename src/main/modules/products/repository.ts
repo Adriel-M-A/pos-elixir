@@ -7,6 +7,7 @@ export function createProductRepository(db: Database) {
       name: string
       categoryId: number | null
       price: number
+      priceDelivery?: number | null
       stock: number
       isStockControlled: boolean
       minStock: number
@@ -16,13 +17,14 @@ export function createProductRepository(db: Database) {
 
       const result = db
         .prepare(
-          `INSERT INTO products (name, category_id, price, stock, is_stock_controlled, min_stock, is_active, created_at, product_type)
-           VALUES (?, ?, ?, ?, ?, ?, 1, ?, ?)`
+          `INSERT INTO products (name, category_id, price, price_delivery, stock, is_stock_controlled, min_stock, is_active, created_at, product_type)
+           VALUES (?, ?, ?, ?, ?, ?, ?, 1, ?, ?)`
         )
         .run(
           data.name,
           data.categoryId,
           data.price,
+          data.priceDelivery || null,
           data.stock,
           data.isStockControlled ? 1 : 0,
           data.minStock,
@@ -35,6 +37,7 @@ export function createProductRepository(db: Database) {
         name: data.name,
         categoryId: data.categoryId,
         price: data.price,
+        priceDelivery: data.priceDelivery || null,
         stock: data.stock,
         isStockControlled: data.isStockControlled,
         minStock: data.minStock,
@@ -52,6 +55,7 @@ export function createProductRepository(db: Database) {
             name,
             category_id as categoryId,
             price,
+            price_delivery as priceDelivery,
             stock,
             is_stock_controlled as isStockControlled,
             min_stock as minStock,
@@ -78,6 +82,7 @@ export function createProductRepository(db: Database) {
             name,
             category_id as categoryId,
             price,
+            price_delivery as priceDelivery,
             stock,
             is_stock_controlled as isStockControlled,
             min_stock as minStock,
@@ -103,6 +108,7 @@ export function createProductRepository(db: Database) {
         name?: string
         categoryId?: number | null
         price?: number
+        priceDelivery?: number | null
         stock?: number
         isStockControlled?: boolean
         minStock?: number
@@ -129,6 +135,10 @@ export function createProductRepository(db: Database) {
       if (data.price !== undefined) {
         fields.push('price = ?')
         values.push(data.price)
+      }
+      if (data.priceDelivery !== undefined) {
+        fields.push('price_delivery = ?')
+        values.push(data.priceDelivery)
       }
       if (data.stock !== undefined) {
         fields.push('stock = ?')

@@ -56,6 +56,24 @@ export const SalesProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   const { products, loading: loadingProducts } = useProductsContext()
   const { promotions, loading: loadingPromotions } = usePromotionsContext()
 
+  // Effect: Update prices when Source changes (Local <-> Online)
+  useEffect(() => {
+    if (cart.length === 0) return
+
+    setCart(prevCart => {
+      return prevCart.map(item => {
+        const product = products.find(p => p.id === item.productId)
+        if (!product) return item
+
+        const newPrice = (source === 'ONLINE' && product.priceDelivery)
+          ? product.priceDelivery
+          : product.price
+
+        return { ...item, unitPrice: newPrice }
+      })
+    })
+  }, [source, products])
+
   // Effect: Validate Cart Items against Products List
   useEffect(() => {
     if (loadingProducts || products.length === 0) return
@@ -115,13 +133,30 @@ export const SalesProvider: React.FC<{ children: React.ReactNode }> = ({ childre
 
     setCart((prev) => {
       const existing = prev.find((item) => item.productId === product.id)
+      const currentPrice = (source === 'ONLINE' && product.priceDelivery)
+        ? product.priceDelivery
+        : product.price
+
       if (existing) {
         if (product.isStockControlled && existing.quantity + quantity > product.stock) {
           toast.error(`Stock insuficiente. Disponible: ${product.stock}`)
           return prev
         }
+        // Update price in case it changed (though usually we stick to added price, 
+        // here we want dynamic feedback if source changed? 
+        // No, addItem is for new items. Recalculation is separate.)
+        // Actually, if we add existing item, we usually just update quantity. 
+        // But if source changed, mixed prices? 
+        // Better enforcing all items follow source.
+
         return prev.map((item) =>
-          item.productId === product.id ? { ...item, quantity: existing.quantity + quantity } : item
+          item.productId === product.id
+            ? {
+              ...item,
+              quantity: existing.quantity + quantity,
+              unitPrice: currentPrice // Ensure price matches current source
+            }
+            : item
         )
       }
       return [
@@ -129,7 +164,7 @@ export const SalesProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         {
           productId: product.id,
           productName: product.name,
-          unitPrice: product.price,
+          unitPrice: currentPrice,
           quantity: quantity,
           stock: product.stock,
           isStockControlled: product.isStockControlled,
@@ -137,7 +172,7 @@ export const SalesProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         }
       ]
     })
-  }, [])
+  }, [source])
 
   const updateQuantity = useCallback((productId: number, delta: number) => {
     setCart((prev) =>

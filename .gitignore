@@ -58,3 +58,6 @@ _External
 # Archivos temporales de pruebas o coverage
 coverage
 .nyc_outputdata/
+
+# Version antigua
+heladeria-ventas-control

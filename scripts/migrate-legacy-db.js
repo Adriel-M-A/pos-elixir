@@ -60,6 +60,19 @@ function migrate() {
             console.warn("Advertencia al verificar columna source:", e.message);
         }
 
+        // 0.1.1 Asegurar columna 'price_delivery' en 'products' (para Doble Precio)
+        try {
+            const tableInfoProd = newDb.pragma('table_info(products)');
+            const hasPriceDelivery = tableInfoProd.some(col => col.name === 'price_delivery');
+
+            if (!hasPriceDelivery) {
+                console.log("AVISO: Agregando columna 'price_delivery' faltante...");
+                newDb.prepare("ALTER TABLE products ADD COLUMN price_delivery REAL DEFAULT NULL").run();
+            }
+        } catch (e) {
+            console.warn("Advertencia al verificar columna price_delivery:", e.message);
+        }
+
         // 0.2 Marcar migración 009 como completada para evitar conflictos al iniciar la App
         try {
             // Aseguramos que la tabla _migrations exista (el bootstrap de la app la crea)
@@ -95,8 +108,8 @@ function migrate() {
         const presentations = oldDb.prepare('SELECT * FROM presentations').all();
 
         const insertProduct = newDb.prepare(`
-            INSERT INTO products (name, category_id, price, stock, is_stock_controlled, min_stock, is_active, created_at, product_type)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+            INSERT INTO products (name, category_id, price, price_delivery, stock, is_stock_controlled, min_stock, is_active, created_at, product_type)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         `);
 
         // Usamos fecha actual local para la creación de productos
@@ -109,6 +122,7 @@ function migrate() {
                     p.name,
                     null, // category_id = NULL (Sin Categoría)
                     p.price_local,
+                    p.price_delivery, // price_delivery
                     0, // stock
                     0, // is_stock_controlled
                     0, // min_stock

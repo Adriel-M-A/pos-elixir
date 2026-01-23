@@ -114,7 +114,8 @@ function Products() {
     { key: 'name', label: 'Nombre' },
     { key: 'type', label: 'Tipo' },
     { key: 'category', label: 'Categoría' },
-    { key: 'price', label: 'Precio' },
+    { key: 'price', label: 'Precio Local' },
+    { key: 'price_delivery', label: 'Precio PedidosYa' },
     { key: 'stock', label: 'Stock' },
     { key: 'status', label: 'Estado' }
   ]
@@ -552,6 +553,9 @@ function Products() {
                   <Badge>{category ? category.name : 'Sin categoría'}</Badge>
                 </TableCell>
                 <TableCell>{formatCurrency(product.price)}</TableCell>
+                <TableCell>
+                  {product.priceDelivery ? formatCurrency(product.priceDelivery) : <span className="text-muted-foreground">-</span>}
+                </TableCell>
                 <TableCell>
                   {product.isStockControlled ? (
                     <span

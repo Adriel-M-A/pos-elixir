@@ -106,7 +106,8 @@ export function ProductCatalog() {
           columns={[
             { key: 'name', label: 'Producto' },
             { key: 'category', label: 'Categoría' },
-            { key: 'price', label: 'Precio' },
+            { key: 'price', label: 'Precio Local' },
+            { key: 'price_delivery', label: 'Precio PedidosYa' },
             { key: 'quantity', label: 'Cantidad', className: 'text-center' }
           ]}
           data={filteredProducts}
@@ -133,6 +134,15 @@ export function ProductCatalog() {
                 </TableCell>
                 <TableCell className="font-semibold text-lg">
                   {formatCurrency(product.price)} {isWeight ? '/ kg' : ''}
+                </TableCell>
+                <TableCell className="font-semibold text-lg text-muted-foreground">
+                  {product.priceDelivery ? (
+                    <>
+                      {formatCurrency(product.priceDelivery)} {isWeight ? '/ kg' : ''}
+                    </>
+                  ) : (
+                    <span className="text-sm font-normal">-</span>
+                  )}
                 </TableCell>
                 <TableCell className="text-center">
                   {qty > 0 ? (

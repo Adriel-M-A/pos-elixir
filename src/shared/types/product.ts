@@ -3,6 +3,7 @@ export interface Product {
   name: string
   categoryId: number | null
   price: number
+  priceDelivery?: number | null
   stock: number
   isStockControlled: boolean
   minStock: number
