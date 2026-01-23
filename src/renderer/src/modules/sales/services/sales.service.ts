@@ -7,6 +7,7 @@ export function createSale(data: {
   promotions?: Array<{ promotionId: number; promotionName: string; discountAmount: number }>
   userId?: number
   source?: 'LOCAL' | 'ONLINE'
+  manualAdjustment?: number
 }) {
   return ipcInvoke('sales:create', data)
 }

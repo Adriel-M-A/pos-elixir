@@ -61,10 +61,10 @@ export function SaleDetailsSheet({ sale, open, onOpenChange, showUser = false }:
           <span>{formatCurrency(sale.items.reduce((acc, item) => acc + item.subtotal, 0))}</span>
         </div>
 
-        {sale.discountTotal > 0 && (
-          <div className="flex justify-between text-sm text-green-600 dark:text-green-400 font-medium">
-            <span>Ahorro Total</span>
-            <span>-{formatCurrency(sale.discountTotal)}</span>
+        {sale.discountTotal !== 0 && (
+          <div className={`flex justify-between text-sm font-medium ${sale.discountTotal > 0 ? 'text-green-600 dark:text-green-400' : 'text-orange-600 dark:text-orange-400'}`}>
+            <span>{sale.discountTotal > 0 ? 'Ahorro Total' : 'Cargos Extra'}</span>
+            <span>{sale.discountTotal > 0 ? '-' : '+'}{formatCurrency(Math.abs(sale.discountTotal))}</span>
           </div>
         )}
       </div>
@@ -156,11 +156,11 @@ export function SaleDetailsSheet({ sale, open, onOpenChange, showUser = false }:
                 </div>
               </div>
 
-              {/* Promociones (Si existen) */}
-              {promotions.length > 0 && (
+              {/* Promociones y Ajustes */}
+              {(promotions.length > 0 || (sale.manualAdjustment && sale.manualAdjustment !== 0)) && (
                 <div className="space-y-3 pt-2">
                   <h3 className="text-sm font-semibold flex items-center gap-2 text-green-600 dark:text-green-400">
-                    <Tag className="h-4 w-4" /> Descuentos Aplicados
+                    <Tag className="h-4 w-4" /> Descuentos y Ajustes
                   </h3>
                   <div className="space-y-2 bg-green-50 dark:bg-green-900/10 p-3 rounded-md border border-green-100 dark:border-green-900/20">
                     {promotions.map((promo, idx) => (
@@ -172,6 +172,14 @@ export function SaleDetailsSheet({ sale, open, onOpenChange, showUser = false }:
                         <span>-{formatCurrency(promo.discountAmount)}</span>
                       </div>
                     ))}
+
+                    {/* Manual Adjustment */}
+                    {sale.manualAdjustment && sale.manualAdjustment !== 0 && (
+                      <div className={`flex justify-between text-sm ${sale.manualAdjustment > 0 ? 'text-orange-600 dark:text-orange-400' : 'text-green-700 dark:text-green-400'}`}>
+                        <span className="font-medium">Ajuste Manual</span>
+                        <span>{sale.manualAdjustment > 0 ? '+' : ''}{formatCurrency(sale.manualAdjustment)}</span>
+                      </div>
+                    )}
                   </div>
                 </div>
               )}

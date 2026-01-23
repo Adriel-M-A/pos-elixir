@@ -26,13 +26,14 @@ export function createSaleService(repository: any, promotionRepository: any) {
         discountTotal += promo.discountAmount
       }
 
-      const finalTotal = total - discountTotal
+      const finalTotal = total - discountTotal + (parsed.manualAdjustment || 0)
 
       return repository.create({
         paymentMethodId: parsed.paymentMethodId,
         total,
         discountTotal,
         finalTotal,
+        manualAdjustment: parsed.manualAdjustment || 0,
         items: parsed.items.map((i) => ({
           ...i,
           subtotal: i.unitPrice * i.quantity

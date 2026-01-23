@@ -18,5 +18,6 @@ export const createSaleSchema = z.object({
   items: z.array(saleItemSchema).min(1),
   promotions: z.array(salePromotionSchema).optional(),
   userId: z.number().int().positive().optional(),
-  source: z.enum(['LOCAL', 'ONLINE']).optional()
+  source: z.enum(['LOCAL', 'ONLINE']).optional(),
+  manualAdjustment: z.number().optional()
 })

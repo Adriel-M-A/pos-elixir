@@ -36,7 +36,9 @@ export function CartSummary() {
     processSale,
     clearCart,
     source,
-    setSource
+    setSource,
+    manualAdjustment,
+    setManualAdjustment
   } = useSales()
 
   const { can } = useAuth()
@@ -56,11 +58,12 @@ export function CartSummary() {
   const [isEditingTotal, setIsEditingTotal] = useState(false)
   const [tempTotal, setTempTotal] = useState('')
   const totalInputRef = useRef<HTMLInputElement>(null)
-  const MANUAL_DISCOUNT_ID = 9999
+
 
   // Calculate total without manual discount to know limits
-  const manualDiscountAmount = appliedPromotions.find(p => p.promotionId === MANUAL_DISCOUNT_ID)?.discountAmount || 0
-  const subtotalAfterOtherPromos = subtotal - (appliedPromotions.reduce((acc, p) => acc + p.discountAmount, 0) - manualDiscountAmount)
+  // const manualDiscountAmount = appliedPromotions.find(p => p.promotionId === MANUAL_DISCOUNT_ID)?.discountAmount || 0
+  // Manual adjustment is now separate.
+  const subtotalAfterOtherPromos = subtotal - appliedPromotions.reduce((acc, p) => acc + p.discountAmount, 0)
 
   // Sync applied promotions with eligible ones
   useEffect(() => {
@@ -70,9 +73,7 @@ export function CartSummary() {
       const match = eligiblePromotions.find((entry) => entry.promotion.id === promo.promotionId)
 
       if (!match) {
-        if (promo.promotionId !== MANUAL_DISCOUNT_ID) {
-          removePromotion(promo.promotionId)
-        }
+        removePromotion(promo.promotionId)
         return
       }
 
@@ -261,6 +262,16 @@ export function CartSummary() {
             </div>
           )}
 
+          {/* Manual Adjustment Line */}
+          {manualAdjustment !== 0 && (
+            <div className={`flex justify-between text-xs font-medium ${manualAdjustment > 0 ? 'text-orange-600' : 'text-green-600'}`}>
+              <span className="flex items-center gap-1">
+                <Pencil className="h-3 w-3" /> Ajuste Manual
+              </span>
+              <span>{manualAdjustment > 0 ? '+' : ''}{formatCurrency(manualAdjustment)}</span>
+            </div>
+          )}
+
           <Separator className="my-2" />
 
           <div className="flex justify-between items-end">
@@ -279,27 +290,10 @@ export function CartSummary() {
                       if (e.key === 'Enter') {
                         const newTotal = parseFloat(tempTotal)
                         if (!isNaN(newTotal) && newTotal >= 0) {
-                          // Logic:
-                          // Target Total = Subtotal - OtherPromos - ManualDiscount
-                          // ManualDiscount = Subtotal - OtherPromos - TargetTotal
-                          const diff = subtotalAfterOtherPromos - newTotal
-
-                          if (Math.abs(diff) < 0.01) {
-                            // No discount needed (or removed)
-                            removePromotion(MANUAL_DISCOUNT_ID)
-                          } else if (diff > 0) {
-                            upsertPromotion({
-                              promotionId: MANUAL_DISCOUNT_ID,
-                              promotionName: 'Descuento Manual',
-                              discountAmount: diff
-                            })
-                          } else {
-                            // Negative discount? (Increasing price). 
-                            // Not requested, but technically possible if we want 'Surcharge'.
-                            // user only asked for discount. Let's assume remove.
-                            // Actually, if they put a HIGHER price, we should remove the discount.
-                            removePromotion(MANUAL_DISCOUNT_ID)
-                          }
+                          // Logic: Adjustment = Target - Base
+                          // Base = Subtotal - PromoDiscounts
+                          const adjustment = newTotal - subtotalAfterOtherPromos
+                          setManualAdjustment(adjustment)
                           setIsEditingTotal(false)
                         }
                       } else if (e.key === 'Escape') {
@@ -315,18 +309,8 @@ export function CartSummary() {
                   onClick={() => {
                     const newTotal = parseFloat(tempTotal)
                     if (!isNaN(newTotal) && newTotal >= 0) {
-                      const diff = subtotalAfterOtherPromos - newTotal
-                      if (Math.abs(diff) < 0.01) {
-                        removePromotion(MANUAL_DISCOUNT_ID)
-                      } else if (diff > 0) {
-                        upsertPromotion({
-                          promotionId: MANUAL_DISCOUNT_ID,
-                          promotionName: 'Descuento Manual',
-                          discountAmount: diff
-                        })
-                      } else {
-                        removePromotion(MANUAL_DISCOUNT_ID)
-                      }
+                      const adjustment = newTotal - subtotalAfterOtherPromos
+                      setManualAdjustment(adjustment)
                       setIsEditingTotal(false)
                     }
                   }}

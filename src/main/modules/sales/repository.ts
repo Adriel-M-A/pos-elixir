@@ -8,6 +8,7 @@ export function createSaleRepository(db: Database) {
       total: number
       discountTotal: number
       finalTotal: number
+      manualAdjustment: number
       items: {
         productId: number
         productName: string
@@ -35,10 +36,10 @@ export function createSaleRepository(db: Database) {
 
         const saleResult = db
           .prepare(
-            `INSERT INTO sales (total, discount_total, final_total, payment_method_id, status, created_at, created_by, created_by_name, source)
-           VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`
+            `INSERT INTO sales (total, discount_total, final_total, manual_adjustment, payment_method_id, status, created_at, created_by, created_by_name, source)
+           VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
           )
-          .run(data.total, data.discountTotal, data.finalTotal, data.paymentMethodId, 'active', now, data.userId || null, createdByName, data.source || 'LOCAL')
+          .run(data.total, data.discountTotal, data.finalTotal, data.manualAdjustment, data.paymentMethodId, 'active', now, data.userId || null, createdByName, data.source || 'LOCAL')
 
         const saleId = Number(saleResult.lastInsertRowid)
 
@@ -102,6 +103,7 @@ export function createSaleRepository(db: Database) {
         total: data.total,
         discountTotal: data.discountTotal,
         finalTotal: data.finalTotal,
+        manualAdjustment: data.manualAdjustment,
         paymentMethodId: data.paymentMethodId,
         source: data.source || 'LOCAL',
         createdAt: now
@@ -155,6 +157,7 @@ export function createSaleRepository(db: Database) {
           s.total,
           s.discount_total as discountTotal,
           s.final_total as finalTotal,
+          s.manual_adjustment as manualAdjustment,
           s.payment_method_id as paymentMethodId,
           s.status,
           s.created_at as createdAt,

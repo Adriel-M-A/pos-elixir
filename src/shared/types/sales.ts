@@ -8,6 +8,7 @@ export interface Sale {
   paymentMethodName?: string
   createdBy?: string // Username of the creator
   source?: 'LOCAL' | 'ONLINE'
+  manualAdjustment?: number
 }
 
 export interface SaleWithDetails extends Sale {

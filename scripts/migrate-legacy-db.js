@@ -3,7 +3,8 @@ const path = require('path');
 const fs = require('fs');
 
 // Rutas de Bases de Datos
-const OLD_DB_PATH = path.resolve(__dirname, '../../heladeria-ventas-control/heladeria.db');
+// Rutas de Bases de Datos - Ambas en carpeta 'data'
+const OLD_DB_PATH = path.resolve(__dirname, '../data/heladeria.db');
 const NEW_DB_PATH = path.resolve(__dirname, '../data/database.db');
 
 console.log('--- Iniciando Migración (Versión Final Corregida) ---');
@@ -214,6 +215,11 @@ function migrate() {
         // ---------------------------------------------------------
         // 4. MIGRAR SABORES (BALDES)
         // ---------------------------------------------------------
+        // ---------------------------------------------------------
+        // 4. MIGRAR SABORES (BALDES) -> IGNORADO
+        // ---------------------------------------------------------
+        console.log('Migración de Sabores omitida por configuración.');
+        /*
         console.log('Migrando Sabores...');
 
         // Verificar si existe la tabla flavors en la BD vieja
@@ -246,6 +252,7 @@ function migrate() {
         } else {
             console.log('La tabla de sabores no existe en la base de datos antigua. Saltando...');
         }
+        */
 
         console.log('--- Migración Completada con Éxito ---');
 

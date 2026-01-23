@@ -25,6 +25,7 @@ export interface SalesContextType {
   appliedPromotions: AppliedPromotion[]
   subtotal: number
   discountTotal: number
+  manualAdjustment: number
   total: number
   paymentMethodId: number | null
   addItem: (product: Product, quantity?: number) => void
@@ -33,6 +34,7 @@ export interface SalesContextType {
   removeItem: (productId: number) => void
   upsertPromotion: (promo: AppliedPromotion) => void
   removePromotion: (promotionId: number) => void
+  setManualAdjustment: (amount: number) => void
   setPaymentMethod: (id: number) => void
   processSale: () => Promise<void>
   clearCart: () => void
@@ -45,6 +47,7 @@ export const SalesContext = createContext<SalesContextType | undefined>(undefine
 export const SalesProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [cart, setCart] = useState<CartItem[]>([])
   const [appliedPromotions, setAppliedPromotions] = useState<AppliedPromotion[]>([])
+  const [manualAdjustment, setManualAdjustment] = useState<number>(0)
   const [paymentMethodId, setPaymentMethodId] = useState<number | null>(null)
   const [source, setSource] = useState<'LOCAL' | 'ONLINE'>('LOCAL')
 
@@ -82,8 +85,6 @@ export const SalesProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       const validCart = prevCart.filter(item => {
         const exists = products.some(p => p.id === item.productId)
         if (!exists) {
-          // We prefer not to spam toasts if multiple items removed, 
-          // but we can show one if list shrinks.
           return false
         }
         return true
@@ -123,7 +124,7 @@ export const SalesProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     [appliedPromotions]
   )
 
-  const total = useMemo(() => Math.max(subtotal - discountTotal, 0), [subtotal, discountTotal])
+  const total = useMemo(() => Math.max(subtotal - discountTotal + manualAdjustment, 0), [subtotal, discountTotal, manualAdjustment])
 
   const addItem = useCallback((product: Product, quantity = 1) => {
     if (product.isStockControlled && product.stock < quantity) {
@@ -142,12 +143,6 @@ export const SalesProvider: React.FC<{ children: React.ReactNode }> = ({ childre
           toast.error(`Stock insuficiente. Disponible: ${product.stock}`)
           return prev
         }
-        // Update price in case it changed (though usually we stick to added price, 
-        // here we want dynamic feedback if source changed? 
-        // No, addItem is for new items. Recalculation is separate.)
-        // Actually, if we add existing item, we usually just update quantity. 
-        // But if source changed, mixed prices? 
-        // Better enforcing all items follow source.
 
         return prev.map((item) =>
           item.productId === product.id
@@ -185,10 +180,6 @@ export const SalesProvider: React.FC<{ children: React.ReactNode }> = ({ childre
             toast.error(`Stock insuficiente. Disponible: ${item.stock}`)
             return item
           }
-
-          // For integer-based/stock-controlled items, maybe enforce integers?
-          // But 'WEIGHT' items are not stock controlled, so they can be floats.
-          // Let's assume frontend controls step size (1 vs 0.1 etc).
 
           return { ...item, quantity: newQty }
         }
@@ -235,6 +226,7 @@ export const SalesProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   const clearCart = useCallback(() => {
     setCart([])
     setAppliedPromotions([])
+    setManualAdjustment(0)
     setPaymentMethodId(null)
     setSource('LOCAL')
   }, [])
@@ -255,7 +247,8 @@ export const SalesProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         items: cart,
         promotions: appliedPromotions,
         userId: user?.id,
-        source
+        source,
+        manualAdjustment
       })
       toast.success('Venta realizada con éxito')
       clearCart()
@@ -271,13 +264,14 @@ export const SalesProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         : 'Error al procesar la venta'
       toast.error(errorMessage)
     }
-  }, [cart, paymentMethodId, appliedPromotions, clearCart, invalidateSalesHistory, invalidateReports])
+  }, [cart, paymentMethodId, appliedPromotions, manualAdjustment, clearCart, invalidateSalesHistory, invalidateReports])
 
   const contextValue = useMemo(() => ({
     cart,
     appliedPromotions,
     subtotal,
     discountTotal,
+    manualAdjustment,
     total,
     paymentMethodId,
     addItem,
@@ -286,6 +280,7 @@ export const SalesProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     removeItem,
     upsertPromotion,
     removePromotion,
+    setManualAdjustment,
     setPaymentMethod: setPaymentMethodId,
     processSale,
     clearCart,
@@ -296,6 +291,7 @@ export const SalesProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     appliedPromotions,
     subtotal,
     discountTotal,
+    manualAdjustment,
     total,
     paymentMethodId,
     addItem,
@@ -304,7 +300,7 @@ export const SalesProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     removeItem,
     upsertPromotion,
     removePromotion,
-    removePromotion,
+    setManualAdjustment,
     processSale,
     clearCart,
     source,
