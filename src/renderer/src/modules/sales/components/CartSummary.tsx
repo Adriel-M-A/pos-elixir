@@ -1,5 +1,6 @@
-import { useEffect, useState } from 'react'
-import { Trash2, Plus, Minus, ChevronDown, ChevronRight, ShoppingCart, Tag, Loader2, TicketPercent } from 'lucide-react'
+import { useEffect, useState, useRef } from 'react'
+import { Trash2, Plus, Minus, ChevronDown, ChevronRight, ShoppingCart, Tag, Loader2, TicketPercent, Pencil, Check, X } from 'lucide-react'
+import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { Checkbox } from '@/components/ui/checkbox'
@@ -51,6 +52,16 @@ export function CartSummary() {
   const [weightDialogOpen, setWeightDialogOpen] = useState(false)
   const [itemToEdit, setItemToEdit] = useState<CartItem | null>(null)
 
+  // Manual Total Edit State
+  const [isEditingTotal, setIsEditingTotal] = useState(false)
+  const [tempTotal, setTempTotal] = useState('')
+  const totalInputRef = useRef<HTMLInputElement>(null)
+  const MANUAL_DISCOUNT_ID = 9999
+
+  // Calculate total without manual discount to know limits
+  const manualDiscountAmount = appliedPromotions.find(p => p.promotionId === MANUAL_DISCOUNT_ID)?.discountAmount || 0
+  const subtotalAfterOtherPromos = subtotal - (appliedPromotions.reduce((acc, p) => acc + p.discountAmount, 0) - manualDiscountAmount)
+
   // Sync applied promotions with eligible ones
   useEffect(() => {
     if (!appliedPromotions.length) return
@@ -59,7 +70,9 @@ export function CartSummary() {
       const match = eligiblePromotions.find((entry) => entry.promotion.id === promo.promotionId)
 
       if (!match) {
-        removePromotion(promo.promotionId)
+        if (promo.promotionId !== MANUAL_DISCOUNT_ID) {
+          removePromotion(promo.promotionId)
+        }
         return
       }
 
@@ -252,7 +265,101 @@ export function CartSummary() {
 
           <div className="flex justify-between items-end">
             <span className="font-bold text-lg">Total</span>
-            <span className="font-black text-2xl text-primary">{formatCurrency(total)}</span>
+            {isEditingTotal ? (
+              <div className="flex items-center gap-2">
+                <div className="relative">
+                  <span className="absolute left-2 top-1/2 -translate-y-1/2 text-muted-foreground text-sm">$</span>
+                  <Input
+                    ref={totalInputRef}
+                    type="number"
+                    value={tempTotal}
+                    onChange={(e) => setTempTotal(e.target.value)}
+                    className="h-8 w-28 pl-5 text-right font-bold pr-2"
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter') {
+                        const newTotal = parseFloat(tempTotal)
+                        if (!isNaN(newTotal) && newTotal >= 0) {
+                          // Logic:
+                          // Target Total = Subtotal - OtherPromos - ManualDiscount
+                          // ManualDiscount = Subtotal - OtherPromos - TargetTotal
+                          const diff = subtotalAfterOtherPromos - newTotal
+
+                          if (Math.abs(diff) < 0.01) {
+                            // No discount needed (or removed)
+                            removePromotion(MANUAL_DISCOUNT_ID)
+                          } else if (diff > 0) {
+                            upsertPromotion({
+                              promotionId: MANUAL_DISCOUNT_ID,
+                              promotionName: 'Descuento Manual',
+                              discountAmount: diff
+                            })
+                          } else {
+                            // Negative discount? (Increasing price). 
+                            // Not requested, but technically possible if we want 'Surcharge'.
+                            // user only asked for discount. Let's assume remove.
+                            // Actually, if they put a HIGHER price, we should remove the discount.
+                            removePromotion(MANUAL_DISCOUNT_ID)
+                          }
+                          setIsEditingTotal(false)
+                        }
+                      } else if (e.key === 'Escape') {
+                        setIsEditingTotal(false)
+                      }
+                    }}
+                  />
+                </div>
+                <Button
+                  size="icon"
+                  variant="ghost"
+                  className="h-8 w-8 text-green-600 hover:text-green-700 hover:bg-green-50"
+                  onClick={() => {
+                    const newTotal = parseFloat(tempTotal)
+                    if (!isNaN(newTotal) && newTotal >= 0) {
+                      const diff = subtotalAfterOtherPromos - newTotal
+                      if (Math.abs(diff) < 0.01) {
+                        removePromotion(MANUAL_DISCOUNT_ID)
+                      } else if (diff > 0) {
+                        upsertPromotion({
+                          promotionId: MANUAL_DISCOUNT_ID,
+                          promotionName: 'Descuento Manual',
+                          discountAmount: diff
+                        })
+                      } else {
+                        removePromotion(MANUAL_DISCOUNT_ID)
+                      }
+                      setIsEditingTotal(false)
+                    }
+                  }}
+                >
+                  <Check className="h-4 w-4" />
+                </Button>
+                <Button
+                  size="icon"
+                  variant="ghost"
+                  className="h-8 w-8 text-red-500 hover:text-red-700 hover:bg-red-50"
+                  onClick={() => setIsEditingTotal(false)}
+                >
+                  <X className="h-4 w-4" />
+                </Button>
+              </div>
+            ) : (
+              <div className="flex items-center gap-2 group relative">
+                <span className="font-black text-2xl text-primary">{formatCurrency(total)}</span>
+                <Button
+                  size="icon"
+                  variant="ghost"
+                  className="h-6 w-6 text-muted-foreground hover:text-primary transition-colors"
+                  onClick={() => {
+                    setTempTotal(total.toString())
+                    setIsEditingTotal(true)
+                    setTimeout(() => totalInputRef.current?.focus(), 50)
+                  }}
+                  title="Editar total manualmente"
+                >
+                  <Pencil className="h-3 w-3" />
+                </Button>
+              </div>
+            )}
           </div>
         </div>
 
