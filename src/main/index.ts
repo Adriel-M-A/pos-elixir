@@ -61,6 +61,7 @@ function createWindow(): void {
     })
 
 
+
     initDB()
     const db = getDB()
 
