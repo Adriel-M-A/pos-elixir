@@ -26,12 +26,11 @@ export function CashPaymentDialog({
     onConfirm
 }: CashPaymentDialogProps) {
     const [tenderedAmount, setTenderedAmount] = useState<string>('')
-    const [change, setChange] = useState<number>(0)
+
 
     useEffect(() => {
         if (open) {
             setTenderedAmount('')
-            setChange(0)
         }
     }, [open])
 
@@ -41,8 +40,7 @@ export function CashPaymentDialog({
         if (!/^\d*\.?\d*$/.test(value)) return
 
         setTenderedAmount(value)
-        const amount = parseFloat(value) || 0
-        setChange(amount - totalAmount)
+
     }
 
     const handleConfirm = () => {
@@ -51,7 +49,10 @@ export function CashPaymentDialog({
     }
 
     const parsedAmount = parseFloat(tenderedAmount) || 0
-    const isValid = parsedAmount >= totalAmount
+    // Si está vacío, asumimos cambio exacto para visualización (neutro/verde)
+    const isSufficient = parsedAmount >= totalAmount
+    const showSuccess = tenderedAmount === '' || isSufficient
+    const displayChange = tenderedAmount === '' ? 0 : (parsedAmount - totalAmount)
 
     return (
         <Dialog open={open} onOpenChange={onOpenChange}>
@@ -85,18 +86,18 @@ export function CashPaymentDialog({
                         </div>
                     </div>
 
-                    <div className={`flex flex-col gap-1 p-4 rounded-lg border transition-colors ${isValid ? 'bg-green-500/10 border-green-500/20' : 'bg-destructive/10 border-destructive/20'}`}>
+                    <div className={`flex flex-col gap-1 p-4 rounded-lg border transition-colors ${showSuccess ? 'bg-green-500/10 border-green-500/20' : 'bg-destructive/10 border-destructive/20'}`}>
                         <div className="flex justify-between items-center">
-                            <span className="text-sm font-semibold uppercase">{isValid ? 'Vuelto' : 'Faltante'}</span>
-                            <span className={`text-2xl font-bold ${isValid ? 'text-green-600 dark:text-green-400' : 'text-destructive'}`}>
-                                {isValid ? formatCurrency(change) : formatCurrency(Math.abs(change))}
+                            <span className="text-sm font-semibold uppercase">{showSuccess ? 'Vuelto' : 'Faltante'}</span>
+                            <span className={`text-2xl font-bold ${showSuccess ? 'text-green-600 dark:text-green-400' : 'text-destructive'}`}>
+                                {showSuccess ? formatCurrency(displayChange) : formatCurrency(Math.abs(displayChange))}
                             </span>
                         </div>
                     </div>
                 </div>
                 <DialogFooter>
                     <Button variant="outline" onClick={() => onOpenChange(false)}>Cancel</Button>
-                    <Button onClick={handleConfirm} disabled={!isValid} size="lg" className="w-full sm:w-auto">
+                    <Button onClick={handleConfirm} size="lg" className="w-full sm:w-auto">
                         Confirmar Cobro
                     </Button>
                 </DialogFooter>
