@@ -61,7 +61,7 @@ export function SaleDetailsSheet({ sale, open, onOpenChange, showUser = false }:
           <span>{formatCurrency(sale.items.reduce((acc, item) => acc + item.subtotal, 0))}</span>
         </div>
 
-        {sale.discountTotal !== 0 && (
+        {(sale.discountTotal || 0) !== 0 && (
           <div className={`flex justify-between text-sm font-medium ${sale.discountTotal > 0 ? 'text-green-600 dark:text-green-400' : 'text-orange-600 dark:text-orange-400'}`}>
             <span>{sale.discountTotal > 0 ? 'Ahorro Total' : 'Cargos Extra'}</span>
             <span>{sale.discountTotal > 0 ? '-' : '+'}{formatCurrency(Math.abs(sale.discountTotal))}</span>
@@ -157,7 +157,7 @@ export function SaleDetailsSheet({ sale, open, onOpenChange, showUser = false }:
               </div>
 
               {/* Promociones y Ajustes */}
-              {(promotions.length > 0 || (sale.manualAdjustment && sale.manualAdjustment !== 0)) && (
+              {(promotions.length > 0 || (sale.manualAdjustment || 0) !== 0) && (
                 <div className="space-y-3 pt-2">
                   <h3 className="text-sm font-semibold flex items-center gap-2 text-green-600 dark:text-green-400">
                     <Tag className="h-4 w-4" /> Descuentos y Ajustes
@@ -174,10 +174,10 @@ export function SaleDetailsSheet({ sale, open, onOpenChange, showUser = false }:
                     ))}
 
                     {/* Manual Adjustment */}
-                    {sale.manualAdjustment && sale.manualAdjustment !== 0 && (
-                      <div className={`flex justify-between text-sm ${sale.manualAdjustment > 0 ? 'text-orange-600 dark:text-orange-400' : 'text-green-700 dark:text-green-400'}`}>
+                    {(sale.manualAdjustment || 0) !== 0 && (
+                      <div className={`flex justify-between text-sm ${(sale.manualAdjustment || 0) > 0 ? 'text-orange-600 dark:text-orange-400' : 'text-green-700 dark:text-green-400'}`}>
                         <span className="font-medium">Ajuste Manual</span>
-                        <span>{sale.manualAdjustment > 0 ? '+' : ''}{formatCurrency(sale.manualAdjustment)}</span>
+                        <span>{(sale.manualAdjustment || 0) > 0 ? '+' : ''}{formatCurrency(sale.manualAdjustment || 0)}</span>
                       </div>
                     )}
                   </div>
