@@ -15,7 +15,7 @@ import type { Product } from '@types'
 export function ProductCatalog() {
   const { categories, loading: categoriesLoading } = useCategories()
   const { products, loading: productsLoading } = useProducts() // Use global context
-  const { cart, addItem } = useSales()
+  const { cart, addItem, source } = useSales()
   const [searchTerm, setSearchTerm] = useState('')
   const [selectedCategory, setSelectedCategory] = useState<string>('all')
 
@@ -76,7 +76,7 @@ export function ProductCatalog() {
             <TabsTrigger
               value="all"
               variant="underline"
-              className="text-base py-2 shrink-0 after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-full after:scale-x-0 after:bg-primary after:transition-transform data-[state=active]:after:scale-x-100"
+              className={`text-base py-2 shrink-0 after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-full after:scale-x-0 ${source === 'ONLINE' ? 'after:bg-red-600' : 'after:bg-primary'} after:transition-transform data-[state=active]:after:scale-x-100`}
             >
               Todos
             </TabsTrigger>
@@ -85,7 +85,7 @@ export function ProductCatalog() {
                 key={category.id}
                 value={String(category.id)}
                 variant="underline"
-                className="text-base py-2 shrink-0 after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-full after:scale-x-0 after:bg-primary after:transition-transform data-[state=active]:after:scale-x-100"
+                className={`text-base py-2 shrink-0 after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-full after:scale-x-0 ${source === 'ONLINE' ? 'after:bg-red-600' : 'after:bg-primary'} after:transition-transform data-[state=active]:after:scale-x-100`}
               >
                 {category.name}
               </TabsTrigger>
@@ -93,7 +93,7 @@ export function ProductCatalog() {
             <TabsTrigger
               value="others"
               variant="underline"
-              className="text-base py-2 shrink-0 after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-full after:scale-x-0 after:bg-primary after:transition-transform data-[state=active]:after:scale-x-100"
+              className={`text-base py-2 shrink-0 after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-full after:scale-x-0 ${source === 'ONLINE' ? 'after:bg-red-600' : 'after:bg-primary'} after:transition-transform data-[state=active]:after:scale-x-100`}
             >
               Otros
             </TabsTrigger>
@@ -146,7 +146,7 @@ export function ProductCatalog() {
                 </TableCell>
                 <TableCell className="text-center">
                   {qty > 0 ? (
-                    <Badge>
+                    <Badge className={`${source === 'ONLINE' ? 'bg-red-600 hover:bg-red-700' : 'bg-primary hover:bg-primary/90'}`}>
                       {isWeight ? `${(qty * 1000).toLocaleString(undefined, { maximumFractionDigits: 2 })} g` : qty}
                     </Badge>
                   ) : (

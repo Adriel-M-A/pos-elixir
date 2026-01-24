@@ -46,6 +46,13 @@ export function CartSummary() {
   const { promotions, loading: promotionsLoading } = usePromotions()
   const { eligiblePromotions } = usePromotionCalculator(can(PERMISSIONS.POS_DISCOUNT) ? promotions : [])
 
+  const isOnline = source === 'ONLINE'
+  const accentColor = isOnline ? 'text-red-600' : 'text-primary'
+  const accentBg = isOnline ? 'bg-red-600' : 'bg-primary'
+  const accentBgHover = isOnline ? 'hover:bg-red-700' : 'hover:bg-primary/90'
+  const accentLightBg = isOnline ? 'bg-red-50 text-red-600' : 'bg-primary/10 text-primary'
+  const accentBorderGroupHover = isOnline ? 'group-hover:border-red-600/30' : 'group-hover:border-primary/30'
+
   const [methods, setMethods] = useState<PaymentMethod[]>([])
   const [promoOpen, setPromoOpen] = useState(false)
   const [showCashDialog, setShowCashDialog] = useState(false)
@@ -128,7 +135,7 @@ export function CartSummary() {
       {/* Header */}
       <div className="p-4 border-b flex items-center justify-between bg-card">
         <div className="flex items-center gap-2">
-          <div className="p-2 bg-primary/10 rounded-full text-primary">
+          <div className={`p-2 rounded-full ${accentLightBg}`}>
             <ShoppingCart className="h-5 w-5" />
           </div>
           <div>
@@ -163,7 +170,7 @@ export function CartSummary() {
 
                   {/* Row 1: Name and Unit Price */}
                   <div className="flex justify-between items-start w-full">
-                    <p className="font-medium text-sm leading-tight text-primary/90 line-clamp-2">
+                    <p className={`font-medium text-sm leading-tight line-clamp-2 ${isOnline ? 'text-red-700' : 'text-primary/90'}`}>
                       {item.productName}
                     </p>
                     <p className="text-xs text-muted-foreground whitespace-nowrap ml-2">
@@ -328,7 +335,7 @@ export function CartSummary() {
               </div>
             ) : (
               <div className="flex items-center gap-2 group relative">
-                <span className="font-black text-2xl text-primary">{formatCurrency(total)}</span>
+                <span className={`font-black text-2xl ${accentColor}`}>{formatCurrency(total)}</span>
                 <Button
                   size="icon"
                   variant="ghost"
@@ -357,12 +364,12 @@ export function CartSummary() {
                 className="w-full flex items-center justify-between p-3 text-sm font-medium hover:bg-muted/50 transition-colors"
               >
                 <div className="flex items-center gap-2">
-                  <div className={`p-1 rounded-md ${eligiblePromotions.length > 0 ? 'bg-primary/10 text-primary' : 'bg-muted text-muted-foreground'}`}>
+                  <div className={`p-1 rounded-md ${eligiblePromotions.length > 0 ? accentLightBg : 'bg-muted text-muted-foreground'}`}>
                     <Tag className="h-4 w-4" />
                   </div>
                   <span>Promociones</span>
                   {eligiblePromotions.length > 0 && (
-                    <Badge className="h-5 px-1.5 text-[10px] ml-1 bg-primary text-primary-foreground hover:bg-primary/90 shadow-sm animate-in zoom-in spin-in-3">
+                    <Badge className={`h-5 px-1.5 text-[10px] ml-1 ${accentBg} text-primary-foreground ${accentBgHover} shadow-sm animate-in zoom-in spin-in-3`}>
                       {eligiblePromotions.length}
                     </Badge>
                   )}
@@ -393,8 +400,8 @@ export function CartSummary() {
                             className={`
                               relative flex items-center gap-2 p-2 rounded-md border text-left transition-all cursor-pointer group min-h-[40px]
                               ${isSelected
-                                ? 'bg-primary/5 border-primary shadow-sm ring-1 ring-primary/20'
-                                : 'bg-card hover:bg-background hover:border-primary/50 border-border'}
+                                ? `${isOnline ? 'bg-red-50 border-red-600 ring-1 ring-red-600/20' : 'bg-primary/5 border-primary shadow-sm ring-1 ring-primary/20'}`
+                                : `bg-card hover:bg-background ${isOnline ? 'hover:border-red-600/50' : 'hover:border-primary/50'} border-border`}
                             `}
                             onClick={() => {
                               if (isSelected) removePromotion(promotion.id)
@@ -408,14 +415,17 @@ export function CartSummary() {
                           >
                             <Checkbox
                               checked={isSelected}
-                              className={`shrink-0 transition-colors ${isSelected ? 'data-[state=checked]:bg-primary data-[state=checked]:border-primary' : ''}`}
+                              className={`shrink-0 transition-colors ${isOnline
+                                  ? 'data-[state=checked]:bg-red-600 data-[state=checked]:border-red-600 border-red-600/50 focus-visible:ring-red-600'
+                                  : 'data-[state=checked]:bg-primary data-[state=checked]:border-primary border-primary/50'
+                                }`}
                             />
 
                             <div className="flex-1 min-w-0 flex items-center justify-between gap-2">
-                              <span className={`text-xs font-medium leading-tight ${isSelected ? 'text-primary' : 'text-foreground'}`}>
+                              <span className={`text-xs font-medium leading-tight ${isSelected ? accentColor : 'text-foreground'}`}>
                                 {promotion.name}
                               </span>
-                              <Badge variant="secondary" className="shrink-0 h-5 px-1.5 text-[10px] font-mono whitespace-nowrap bg-background border group-hover:border-primary/30 transition-colors">
+                              <Badge variant="secondary" className={`shrink-0 h-5 px-1.5 text-[10px] font-mono whitespace-nowrap bg-background border ${accentBorderGroupHover} transition-colors`}>
                                 -{formatCurrency(discountAmount)}
                               </Badge>
                             </div>
@@ -448,7 +458,7 @@ export function CartSummary() {
                 </TabsTrigger>
                 <TabsTrigger
                   value="ONLINE"
-                  className="h-8 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
+                  className="h-8 data-[state=active]:bg-red-600 data-[state=active]:text-white"
                 >
                   PedidosYa
                 </TabsTrigger>
@@ -471,7 +481,7 @@ export function CartSummary() {
                   <TabsTrigger
                     key={m.id}
                     value={String(m.id)}
-                    className="h-8 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
+                    className={`h-8 data-[state=active]:text-white ${isOnline ? 'data-[state=active]:bg-red-600' : 'data-[state=active]:bg-primary'}`}
                   >
                     {m.name}
                   </TabsTrigger>
@@ -483,7 +493,7 @@ export function CartSummary() {
 
         <Button
           size="lg"
-          className="w-full text-lg font-bold shadow-lg hover:shadow-xl transition-all"
+          className={`w-full text-lg font-bold shadow-lg hover:shadow-xl transition-all ${accentBg} ${accentBgHover}`}
           onClick={handleProcessSale}
           disabled={cart.length === 0 || !paymentMethodId}
         >
