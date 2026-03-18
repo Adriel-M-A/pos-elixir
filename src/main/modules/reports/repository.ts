@@ -1,5 +1,5 @@
 import type { Database } from 'better-sqlite3'
-import type { DailySaleRow, SalesSummary, PaymentMethodSummary, Product } from '@types'
+import type { DailySaleRow, SalesSummary, PaymentMethodSummary, Product, SalesSourceSummary } from '@types'
 
 export function createReportRepository(db: Database) {
   return {
@@ -100,6 +100,7 @@ export function createReportRepository(db: Database) {
         .all(startDateTime, endDateTime) as SalesSourceSummary[]
     },
 
+
     getSaleDetail(saleId: number) {
       const sale = db
         .prepare(
@@ -188,7 +189,7 @@ export function createReportRepository(db: Database) {
             si.product_id as productId,
             COALESCE(p.name, MAX(si.product_name)) as productName,
             SUM(si.quantity) as totalQuantity,
-            SUM(si.subtotal) as totalRevenue,
+            SUM(si.subtotal * CAST(s.final_total AS FLOAT) / CASE WHEN s.total = 0 THEN 1 ELSE s.total END) as totalRevenue,
             COALESCE(p.price, MAX(si.unit_price)) as price,
             p.product_type as productType
           FROM sale_items si

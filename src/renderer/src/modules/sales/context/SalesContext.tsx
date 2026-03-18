@@ -114,6 +114,13 @@ export const SalesProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     })
   }, [promotions, loadingPromotions])
 
+  // Effect: Reset Manual Adjustment when Cart is Empty
+  useEffect(() => {
+    if (cart.length === 0 && manualAdjustment !== 0) {
+      setManualAdjustment(0)
+    }
+  }, [cart, manualAdjustment])
+
   const subtotal = useMemo(
     () => cart.reduce((acc, item) => acc + item.unitPrice * item.quantity, 0),
     [cart]

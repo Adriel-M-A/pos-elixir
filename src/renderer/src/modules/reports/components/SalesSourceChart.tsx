@@ -15,7 +15,7 @@ export function SalesSourceChart({ data }: SalesSourceChartProps) {
 
     const defaultColor = '#94a3b8' // Slate-400 for unknown
 
-    const chartData = data.map((item) => ({
+    const chartData = (data || []).map((item) => ({
         name: item.source === 'LOCAL' ? 'Local' : (item.source === 'ONLINE' ? 'PedidosYa' : item.source),
         value: item.totalFinal,
         color: sourceColors[item.source] || defaultColor

@@ -113,6 +113,7 @@ export function createReportService(repository: any) {
       const summary = safeSummary(repository.getSalesSummary(start, end))
       const byPaymentMethod = repository.getPaymentMethodSummary(start, end)
       const bySalesSource = repository.getSalesSourceSummary(start, end)
+
       const rangeInfo = getRangeInfo(start, end)
       const previousSummary = safeSummary(
         repository.getSalesSummary(rangeInfo.previousRange.start, rangeInfo.previousRange.end)
@@ -124,6 +125,7 @@ export function createReportService(repository: any) {
         summary,
         byPaymentMethod,
         bySalesSource,
+
         comparison
       }
     },
